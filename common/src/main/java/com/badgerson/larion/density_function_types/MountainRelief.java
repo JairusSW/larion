@@ -50,13 +50,22 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
                 int valleys = 3 + (int) (3 * fraction(shape, 50));
                 double winding = valleys * angle + 2.2 * radial + 0.9 * Math.sin(angle);
                 double valley = 0.5 + 0.5 * Math.cos(winding);
-                double tributaries = 0.5 + 0.5 * Math.cos(2 * winding - radial);
                 double profile = smooth(1 - radial);
                 double shoulder = radial * smooth(Math.min(1, radial / 0.24));
-                // The angular span of the valley floor grows downhill, while the
-                // profile makes the incision disappear into the surrounding plain.
                 double valleyFloor = smooth(Math.clamp((valley - 0.36) / (0.61 - 0.25 * radial), 0, 1));
-                double incision = shoulder * (0.91 * valleyFloor + 0.09 * valley * tributaries);
+
+                // Two ravines fork uphill from each main valley. Their separation
+                // shrinks downstream so the cuts converge into a single channel.
+                double branch = 1.15 * (1 - radial);
+                double channelDistance = 1 - Math.max(Math.cos(winding - branch), Math.cos(winding + branch));
+                double channelWidth = 0.055 + 0.18 * radial;
+                double channel = 1 - smooth(Math.min(1, channelDistance / channelWidth));
+
+                // Leave sharper rock ribs between the cuts. Keep them attached to
+                // the summit and fade their relief out toward the foot of the slope.
+                double ridgeDistance = Math.sqrt(Math.max(0, valley));
+                double rib = 1 - smooth(Math.min(1, ridgeDistance / 0.58));
+                double incision = shoulder * (0.68 * valleyFloor + 0.37 * channel - 0.31 * rib);
                 double peak = 210 + 105 * fraction(shape, 40);
                 height = Math.max(height, peak * profile * (1 - incision));
             }
