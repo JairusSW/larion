@@ -30,6 +30,8 @@ public class LarionMod implements ModInitializer {
         Identifier.fromNamespaceAndPath(Constants.MOD_ID, "z"), ZCoord.CODEC);
     Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE,
         Identifier.fromNamespaceAndPath(Constants.MOD_ID, "flat_domain_warp"), FlatDomainWarp.CODEC);
+    Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE,
+        Identifier.fromNamespaceAndPath(Constants.MOD_ID, "mountain_relief"), MountainRelief.CODEC);
     Registry.register(BuiltInRegistries.MATERIAL_CONDITION_TYPE,
         Identifier.fromNamespaceAndPath(Constants.MOD_ID, "somewhat_steep"),
         SomewhatSteepMaterialCondition.CODEC);
