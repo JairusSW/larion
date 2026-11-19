@@ -7,12 +7,30 @@
       "type": "larion:flat_domain_warp",
       "input": {
         "type": "minecraft:min",
-        "left": "larion:overworld/caves/river_noodle",
-        "right": "minecraft:overworld/depth"
+        "left": "minecraft:overworld/depth",
+        "right": {
+          "type": "minecraft:add",
+          "left": "larion:overworld/caves/river_noodle",
+          "right": {
+            "type": "minecraft:gradient",
+            "axis": "y",
+            "from_coordinate": 96,
+            "to_coordinate": 144,
+            "from_value": 0,
+            "to_value": 2
+          }
+        }
       },
       "warp_x": {
         "type": "minecraft:mul",
-        "left": 33.333,
+        "left": {
+          "type": "minecraft:gradient",
+          "axis": "y",
+          "from_coordinate": 92,
+          "to_coordinate": 176,
+          "from_value": 33.333,
+          "to_value": 7
+        },
         "right": {
           "type": "minecraft:noise",
           "noise": "larion:terrain/warp_x",
@@ -22,7 +40,14 @@
       },
       "warp_z": {
         "type": "minecraft:mul",
-        "left": 33.333,
+        "left": {
+          "type": "minecraft:gradient",
+          "axis": "y",
+          "from_coordinate": 92,
+          "to_coordinate": 176,
+          "from_value": 33.333,
+          "to_value": 7
+        },
         "right": {
           "type": "minecraft:noise",
           "noise": "larion:terrain/warp_z",
