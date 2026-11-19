@@ -1,5 +1,6 @@
 package com.badgerson.larion.density_function_types;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Interval;
@@ -7,12 +8,13 @@ import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
 import net.minecraft.world.level.levelgen.densityfunction.DensitySampler;
 import net.minecraft.world.level.levelgen.densityfunction.DfRewriteRule;
 
-public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) implements DensityFunction {
+public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ, boolean glacierChannels) implements DensityFunction {
     private static final int SPACING = 768;
 
     public static final MapCodec<MountainRelief> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(DensityFunction.CODEC.fieldOf("shift_x").forGetter(MountainRelief::shiftX),
-                    DensityFunction.CODEC.fieldOf("shift_z").forGetter(MountainRelief::shiftZ))
+                    DensityFunction.CODEC.fieldOf("shift_z").forGetter(MountainRelief::shiftZ),
+                    Codec.BOOL.optionalFieldOf("glacier_channels", false).forGetter(MountainRelief::glacierChannels))
             .apply(instance, MountainRelief::new));
 
     @Override
@@ -22,14 +24,15 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
         return (PointSampler) (samplerContext, x, y, z) -> {
             double east = x + 440 * xShift.sampleValue(samplerContext, x, 0, z);
             double south = z + 440 * zShift.sampleValue(samplerContext, x, 0, z);
-            return (float) relief(east, south);
+            return (float) relief(east, south, glacierChannels);
         };
     }
 
-    static double relief(double x, double z) {
+    static double relief(double x, double z, boolean glacierChannels) {
         int gridX = (int) Math.floor(x / SPACING);
         int gridZ = (int) Math.floor(z / SPACING);
         double height = 0;
+        double glacier = 0;
         for (int dz = -1; dz <= 1; dz++) {
             for (int dx = -1; dx <= 1; dx++) {
                 int cellX = gridX + dx;
@@ -74,10 +77,18 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
                 double rib = 1 - smooth(Math.min(1, ridgeDistance / 0.58));
                 double incision = shoulder * (0.68 * valleyFloor + 0.37 * channel - 0.31 * rib);
                 double peak = 210 + 105 * fraction(shape, 40);
-                height = Math.max(height, peak * profile * (1 - incision));
+                double flank = peak * profile * (1 - incision);
+                if (flank > height) {
+                    height = flank;
+                    if (glacierChannels) {
+                        // Deliver ice down the ravines and taper it out at both ends.
+                        glacier = channel * smooth(Math.clamp((radial - 0.12) / 0.22, 0, 1))
+                                * smooth(Math.clamp((0.82 - radial) / 0.28, 0, 1));
+                    }
+                }
             }
         }
-        return height;
+        return glacierChannels ? glacier : height;
     }
 
     private static double smooth(double t) {
@@ -96,12 +107,12 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
 
     @Override
     public DensityFunction rewriteChildren(DfRewriteRule rule) {
-        return new MountainRelief(rule.rewrite(shiftX), rule.rewrite(shiftZ));
+        return new MountainRelief(rule.rewrite(shiftX), rule.rewrite(shiftZ), glacierChannels);
     }
 
     @Override
     public Interval range() {
-        return Interval.ofSymmetric(315);
+        return Interval.ofSymmetric(glacierChannels ? 1 : 315);
     }
 
     @Override

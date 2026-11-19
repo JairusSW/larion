@@ -36,6 +36,10 @@ public class LarionMod implements ModInitializer {
         Identifier.fromNamespaceAndPath(Constants.MOD_ID, "somewhat_steep"),
         SomewhatSteepMaterialCondition.CODEC);
 
+    Registry.register(BuiltInRegistries.MATERIAL_CONDITION_TYPE,
+        Identifier.fromNamespaceAndPath(Constants.MOD_ID, "density_threshold"),
+        DensityThresholdMaterialCondition.CODEC);
+
     // Use Fabric to bootstrap the Common mod.
     Constants.LOG.info("Larion World Generation: Registered custom entries");
     CommonClass.init();
