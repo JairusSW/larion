@@ -40,7 +40,11 @@
             ]
           }
         },
-        "right": "larion:overworld/terrain/mountains"
+        "right": {
+          "type": "minecraft:add",
+          "left": "larion:overworld/terrain/mountains",
+          "right": "larion:overworld/terrain/ocean_relief"
+        }
       }
     }
   }
