@@ -28,6 +28,7 @@
       "then_run": {
         "type": "minecraft:sequence",
         "sequence": [
+          "larion:alpine",
           {
             "type": "minecraft:condition",
             "if_true": {
