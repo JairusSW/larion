@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:cache",
+  "input": {
+    "type": "minecraft:add",
+    "left": {
+      "type": "minecraft:add",
+      "left": "larion:overworld/terrain/base_height",
+      "right": "larion:overworld/terrain/features"
+    },
+    "right": {
+      "type": "minecraft:add",
+      "left": "larion:overworld/terrain/tepuis",
+      "right": "larion:overworld/terrain/coastal_cliffs"
+    }
+  }
+}

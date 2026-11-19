@@ -1,0 +1,126 @@
+{
+  "type": "minecraft:add",
+  "left": {
+    "type": "minecraft:mul",
+    "left": {
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": "minecraft:overworld/continents",
+        "points": [
+          {
+            "location": -0.3,
+            "derivative": 0,
+            "value": 0
+          },
+          {
+            "location": -0.17,
+            "derivative": 0,
+            "value": 0
+          },
+          {
+            "location": -0.13,
+            "derivative": 0,
+            "value": 39
+          },
+          {
+            "location": -0.085,
+            "derivative": 0,
+            "value": 40
+          },
+          {
+            "location": 0.06,
+            "derivative": 0,
+            "value": 0
+          }
+        ]
+      }
+    },
+    "right": {
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": {
+          "type": "minecraft:noise",
+          "noise": "larion:erosion/ranges",
+          "xz_scale": 0.8,
+          "y_scale": 0
+        },
+        "points": [
+          {
+            "location": -0.24,
+            "derivative": 0,
+            "value": 0
+          },
+          {
+            "location": 0.11,
+            "derivative": 0,
+            "value": 0
+          },
+          {
+            "location": 0.36,
+            "derivative": 0,
+            "value": 1
+          }
+        ]
+      }
+    }
+  },
+  "right": {
+    "type": "minecraft:mul",
+    "left": {
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": "minecraft:overworld/continents",
+        "points": [
+          {
+            "location": -0.37,
+            "value": 0,
+            "derivative": 0
+          },
+          {
+            "location": -0.21,
+            "value": 11,
+            "derivative": 0
+          },
+          {
+            "location": -0.15,
+            "value": 27,
+            "derivative": 0
+          },
+          {
+            "location": -0.105,
+            "value": 0,
+            "derivative": 0
+          }
+        ]
+      }
+    },
+    "right": {
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": {
+          "type": "minecraft:noise",
+          "noise": "larion:erosion/ranges",
+          "xz_scale": 0.8,
+          "y_scale": 0
+        },
+        "points": [
+          {
+            "location": -0.45,
+            "value": -1,
+            "derivative": 0
+          },
+          {
+            "location": -0.17,
+            "value": -0.8,
+            "derivative": 0
+          },
+          {
+            "location": 0.02,
+            "value": 0,
+            "derivative": 0
+          }
+        ]
+      }
+    }
+  }
+}

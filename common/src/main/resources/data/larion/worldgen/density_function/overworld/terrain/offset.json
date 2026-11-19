@@ -8,8 +8,20 @@
       "left": -0.3168897689123,
       "right": {
         "type": "minecraft:add",
-        "left": "larion:overworld/terrain/base_height",
-        "right": "larion:overworld/terrain/features"
+        "left": "larion:overworld/terrain/land_relief",
+        "right": {
+          "type": "minecraft:mul",
+          "left": "larion:overworld/terrain/river_channel",
+          "right": {
+            "type": "minecraft:min",
+            "left": 0,
+            "right": {
+              "type": "minecraft:sub",
+              "left": -135,
+              "right": "larion:overworld/terrain/land_relief"
+            }
+          }
+        }
       }
     }
   }
