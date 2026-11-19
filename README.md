@@ -81,10 +81,3 @@ If you like the project and want to send me a personal donation, here is a Paypa
 https://www.paypal.com/donate/?hosted_button_id=L2WKHTDJ4DANU
 
 .. or alternatively send some Bitcoin to bc1qk5688pjsy228zkrda5e9w43wzn0zye4w0ygej4
-
-prompt:
-/goal you should be able to use my computer.
-  1. make mountains smooth and have a base and summit, not a bunch a noise blobs thrown together
-  2. model them after real mountains with erosion, realistic valleys, arms of the mountain, etc
-  3. limit caves high up and villages should not generate high up or other structures. they look ugly on mountains.
-  4. compare to real pics. use computer to do this.
