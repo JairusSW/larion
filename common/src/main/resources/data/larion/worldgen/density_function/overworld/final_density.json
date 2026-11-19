@@ -40,75 +40,82 @@
                     "type": "minecraft:add",
                     "left": 0.078125,
                     "right": {
-                      "type": "minecraft:min",
-                      "left": "larion:overworld/caves/chasms",
-                      "right": {
-                        "type": "minecraft:range_choice",
-                        "input": "minecraft:overworld/sloped_cheese",
-                        "max_exclusive": 1.5625,
-                        "min_inclusive": -1000000.0,
-                        "when_in_range": "minecraft:overworld/sloped_cheese",
-                        "when_out_of_range": {
-                          "type": "minecraft:max",
-                          "left": {
-                            "type": "minecraft:min",
-                            "left": "larion:overworld/caves/lava_river_noodle",
-                            "right": {
-                              "type": "minecraft:add",
-                              "left": {
-                                "type": "minecraft:mul",
-                                "left": 4.0,
-                                "right": {
-                                  "type": "minecraft:square",
-                                  "input": {
-                                    "type": "minecraft:noise",
-                                    "noise": "minecraft:cave_layer",
-                                    "xz_scale": 1.0,
-                                    "y_scale": 8.0
-                                  }
-                                }
-                              },
+                      "type": "minecraft:range_choice",
+                      "input": "minecraft:y",
+                      "min_inclusive": 80,
+                      "max_exclusive": 1000000,
+                      "when_in_range": "minecraft:overworld/sloped_cheese",
+                      "when_out_of_range": {
+                        "type": "minecraft:min",
+                        "left": "larion:overworld/caves/chasms",
+                        "right": {
+                          "type": "minecraft:range_choice",
+                          "input": "minecraft:overworld/sloped_cheese",
+                          "max_exclusive": 1.5625,
+                          "min_inclusive": -1000000.0,
+                          "when_in_range": "minecraft:overworld/sloped_cheese",
+                          "when_out_of_range": {
+                            "type": "minecraft:max",
+                            "left": {
+                              "type": "minecraft:min",
+                              "left": "larion:overworld/caves/lava_river_noodle",
                               "right": {
                                 "type": "minecraft:add",
                                 "left": {
-                                  "type": "minecraft:clamp",
-                                  "input": {
-                                    "type": "minecraft:add",
-                                    "left": 0.27,
-                                    "right": {
+                                  "type": "minecraft:mul",
+                                  "left": 4.0,
+                                  "right": {
+                                    "type": "minecraft:square",
+                                    "input": {
                                       "type": "minecraft:noise",
-                                      "noise": "minecraft:cave_cheese",
+                                      "noise": "minecraft:cave_layer",
                                       "xz_scale": 1.0,
-                                      "y_scale": 0.6666666666666666
+                                      "y_scale": 8.0
                                     }
-                                  },
-                                  "max": 1.0,
-                                  "min": -1.0
+                                  }
                                 },
                                 "right": {
-                                  "type": "minecraft:clamp",
-                                  "input": {
-                                    "type": "minecraft:add",
-                                    "left": 1.0,
-                                    "right": {
-                                      "type": "minecraft:mul",
-                                      "left": -0.64,
-                                      "right": "minecraft:overworld/sloped_cheese"
-                                    }
+                                  "type": "minecraft:add",
+                                  "left": {
+                                    "type": "minecraft:clamp",
+                                    "input": {
+                                      "type": "minecraft:add",
+                                      "left": 0.27,
+                                      "right": {
+                                        "type": "minecraft:noise",
+                                        "noise": "minecraft:cave_cheese",
+                                        "xz_scale": 1.0,
+                                        "y_scale": 0.6666666666666666
+                                      }
+                                    },
+                                    "max": 1.0,
+                                    "min": -1.0
                                   },
-                                  "max": 0.5,
-                                  "min": 0.0
+                                  "right": {
+                                    "type": "minecraft:clamp",
+                                    "input": {
+                                      "type": "minecraft:add",
+                                      "left": 1.0,
+                                      "right": {
+                                        "type": "minecraft:mul",
+                                        "left": -0.64,
+                                        "right": "minecraft:overworld/sloped_cheese"
+                                      }
+                                    },
+                                    "max": 0.5,
+                                    "min": 0.0
+                                  }
                                 }
                               }
+                            },
+                            "right": {
+                              "type": "minecraft:range_choice",
+                              "input": "minecraft:overworld/caves/pillars",
+                              "max_exclusive": 0.03,
+                              "min_inclusive": -1000000.0,
+                              "when_in_range": -1000000.0,
+                              "when_out_of_range": "minecraft:overworld/caves/pillars"
                             }
-                          },
-                          "right": {
-                            "type": "minecraft:range_choice",
-                            "input": "minecraft:overworld/caves/pillars",
-                            "max_exclusive": 0.03,
-                            "min_inclusive": -1000000.0,
-                            "when_in_range": -1000000.0,
-                            "when_out_of_range": "minecraft:overworld/caves/pillars"
                           }
                         }
                       }

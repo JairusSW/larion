@@ -6,9 +6,16 @@
     "input": {
       "type": "larion:flat_domain_warp",
       "input": {
-        "type": "minecraft:min",
-        "left": "larion:overworld/caves/river_noodle",
-        "right": "minecraft:overworld/depth"
+        "type": "minecraft:range_choice",
+        "input": "minecraft:y",
+        "min_inclusive": 80,
+        "max_exclusive": 1000000,
+        "when_in_range": "minecraft:overworld/depth",
+        "when_out_of_range": {
+          "type": "minecraft:min",
+          "left": "larion:overworld/caves/river_noodle",
+          "right": "minecraft:overworld/depth"
+        }
       },
       "warp_x": {
         "type": "minecraft:mul",
