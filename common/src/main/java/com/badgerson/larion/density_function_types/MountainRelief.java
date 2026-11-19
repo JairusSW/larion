@@ -53,7 +53,10 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
                 double tributaries = 0.5 + 0.5 * Math.cos(2 * winding - radial);
                 double profile = smooth(1 - radial);
                 double shoulder = radial * smooth(Math.min(1, radial / 0.24));
-                double incision = shoulder * (0.76 * valley * valley + 0.12 * valley * tributaries);
+                // The angular span of the valley floor grows downhill, while the
+                // profile makes the incision disappear into the surrounding plain.
+                double valleyFloor = smooth(Math.clamp((valley - 0.36) / (0.61 - 0.25 * radial), 0, 1));
+                double incision = shoulder * (0.91 * valleyFloor + 0.09 * valley * tributaries);
                 double peak = 210 + 105 * fraction(shape, 40);
                 height = Math.max(height, peak * profile * (1 - incision));
             }
