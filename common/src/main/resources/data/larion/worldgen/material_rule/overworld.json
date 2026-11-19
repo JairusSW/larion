@@ -28,8 +28,6 @@
       "then_run": {
         "type": "minecraft:sequence",
         "sequence": [
-          "larion:alpine",
-          "larion:coast_and_shelf",
           {
             "type": "minecraft:condition",
             "if_true": {

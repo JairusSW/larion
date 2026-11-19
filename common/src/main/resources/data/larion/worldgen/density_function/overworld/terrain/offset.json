@@ -8,43 +8,8 @@
       "left": -0.3168897689123,
       "right": {
         "type": "minecraft:add",
-        "left": {
-          "type": "minecraft:spline",
-          "spline": {
-            "coordinate": {
-              "type": "minecraft:add",
-              "left": "larion:overworld/terrain/base_height",
-              "right": "larion:overworld/terrain/features"
-            },
-            "points": [
-              {
-                "location": -192,
-                "value": -192,
-                "derivative": 1
-              },
-              {
-                "location": -113,
-                "value": -113,
-                "derivative": 1
-              },
-              {
-                "location": -76,
-                "value": -91,
-                "derivative": 0.24
-              },
-              {
-                "location": 225,
-                "value": -52,
-                "derivative": 0.1
-              }
-            ]
-          }
-        },
-        "right": {
-          "type": "minecraft:add",
-          "left": "larion:overworld/terrain/mountains",
-          "right": "larion:overworld/terrain/ocean_relief"
-        }
+        "left": "larion:overworld/terrain/base_height",
+        "right": "larion:overworld/terrain/features"
       }
     }
   }

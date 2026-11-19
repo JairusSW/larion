@@ -1,7 +1,6 @@
 package com.badgerson.larion.mixin;
 
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.CarverOutput;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
@@ -9,38 +8,10 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(NoiseBasedChunkGenerator.class)
 public class NoiseChunkGeneratorMixin {
-  @ModifyArg(method = "generateCarvers", at = @At(value = "INVOKE",
-      target = "Lnet/minecraft/world/level/levelgen/carver/WorldCarver;carve(Lnet/minecraft/world/level/levelgen/WorldGenerationContext;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/chunk/CarverOutput;)Z"))
-  private CarverOutput larion$limitCarverHeight(CarverOutput output) {
-    var generator = (NoiseBasedChunkGenerator) (Object) this;
-    if (!generator.stable(NoiseGeneratorSettings.OVERWORLD) || generator.getMinY() != -128) {
-      return output;
-    }
-    return new CarverOutput() {
-      @Override
-      public void carve(int x, int y, int z) {
-        if (y < 160) {
-          output.carve(x, y, z);
-        }
-      }
-
-      @Override
-      public int minY() {
-        return output.minY();
-      }
-
-      @Override
-      public int maxY() {
-        return Math.min(output.maxY(), 159);
-      }
-    };
-  }
-
   @Inject(method = "createFluidPicker", at = @At("HEAD"), cancellable = true)
   private static void createFluidPicker(NoiseGeneratorSettings settings,
       CallbackInfoReturnable<Aquifer.FluidPicker> ci) {
