@@ -1,7 +1,9 @@
 package com.badgerson.larion;
 
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 public interface MaterialRuleContextExtensions {
-  public SurfaceRules.Condition getSomewhatSteepSlopePredicate();
+    void larion$setChunk(ChunkAccess chunk);
+
+    ChunkAccess larion$getChunk();
 }

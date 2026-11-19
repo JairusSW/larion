@@ -1,6 +1,6 @@
 ![Larion project logo](images/larion_logo.png)
 
-# Larion World Generation, for Minecraft 1.20-1.21.1
+# Larion World Generation, for Minecraft 26.3 (Fabric)
 
 Larion is a terrain generation mod that overhauls the style and layout of world generation in a modern-vanilla-like "epic fantasy" style favoring otherworldly, dreamlike vistas.
 
@@ -10,6 +10,10 @@ Please be aware that the mod is still in active development, future updates will
 
 If you want a limited world size, check out the [Disc
 World](https://modrinth.com/datapack/larion-one-continent) add-on datapack!
+
+## Building
+
+Run `./gradlew :fabric:build` with JDK 25. The mod JAR is in `fabric/build/libs/`. Install it with Fabric Loader 0.20.1 or later and Fabric API for Minecraft 26.3.
 
 ## Features
 
@@ -77,3 +81,10 @@ If you like the project and want to send me a personal donation, here is a Paypa
 https://www.paypal.com/donate/?hosted_button_id=L2WKHTDJ4DANU
 
 .. or alternatively send some Bitcoin to bc1qk5688pjsy228zkrda5e9w43wzn0zye4w0ygej4
+
+prompt:
+/goal you should be able to use my computer.
+  1. make mountains smooth and have a base and summit, not a bunch a noise blobs thrown together
+  2. model them after real mountains with erosion, realistic valleys, arms of the mountain, etc
+  3. limit caves high up and villages should not generate high up or other structures. they look ugly on mountains.
+  4. compare to real pics. use computer to do this.

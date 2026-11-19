@@ -1,13 +1,5 @@
 {
-  "amplitudes": [
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0,
-    1.0
-  ],
-  "firstOctave": -8
+  "base_amplitude": 0.9844496315523614,
+  "base_octave": -8,
+  "octave_count": 8
 }

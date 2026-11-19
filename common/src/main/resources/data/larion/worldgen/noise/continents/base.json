@@ -1,5 +1,8 @@
 {
-  "amplitudes": [
+  "base_amplitude": 0.8682711327586592,
+  "base_octave": -11,
+  "octave_count": 9,
+  "amplitude_modifiers": [
     1.0,
     1.0,
     2.0,
@@ -9,6 +12,5 @@
     2.0,
     2.0,
     2.0
-  ],
-  "firstOctave": -11
+  ]
 }

@@ -1,43 +1,28 @@
 package com.badgerson.larion;
 
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 
-public class SomewhatSteepSlopePredicate extends SurfaceRules.LazyXZCondition{
-	public SomewhatSteepSlopePredicate(SurfaceRules.Context context) {
-		super(context);
-	}
+public final class SomewhatSteepSlopePredicate extends MaterialRuleContext.LazyXZCondition {
+    private final int threshold;
 
-	@Override
-	protected boolean compute() {
+    public SomewhatSteepSlopePredicate(MaterialRuleContext context, int threshold) {
+        super(context);
+        this.threshold = threshold;
+    }
 
-  int x = this.context.blockX & 15;
-  int z = this.context.blockZ & 15;
+    @Override
+    protected boolean compute() {
+        ChunkAccess chunk = ((MaterialRuleContextExtensions) (Object) context).larion$getChunk();
+        int x = context.blockX() & 15;
+        int z = context.blockZ() & 15;
+        var heightmap = Heightmap.Types.WORLD_SURFACE_WG;
+        int height = chunk.getHeight(heightmap, x, z);
 
-  ChunkAccess chunk = this.context.chunk;
-
-  int here = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
-
-  final int SOMEWHAT_STEEP_THRESHOLD = 1;
-
-	int south = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, Math.max(z - 1, 0));
-	if (here - south > SOMEWHAT_STEEP_THRESHOLD) {
-		return true;
-	} else {
-		int north = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, Math.min(z + 1, 15));
-		if (here - north > SOMEWHAT_STEEP_THRESHOLD) {
-			return true;
-		} else {
-
-			int west = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, Math.max(x - 1, 0), z);
-			if (here - west > SOMEWHAT_STEEP_THRESHOLD) {
-				return true;
-			} else {
-				int east = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, Math.min(x + 1, 15), z);
-				return here - east > SOMEWHAT_STEEP_THRESHOLD;
-			}
-		}
-	}
-  }
+        return height - chunk.getHeight(heightmap, x, Math.max(z - 1, 0)) > threshold
+                || height - chunk.getHeight(heightmap, x, Math.min(z + 1, 15)) > threshold
+                || height - chunk.getHeight(heightmap, Math.max(x - 1, 0), z) > threshold
+                || height - chunk.getHeight(heightmap, Math.min(x + 1, 15), z) > threshold;
+    }
 }

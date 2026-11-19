@@ -1,33 +1,23 @@
 package com.badgerson.larion.mixin;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import com.badgerson.larion.MaterialRuleContextExtensions;
-import com.badgerson.larion.SomewhatSteepSlopePredicate;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
-import org.spongepowered.asm.mixin.injection.At;
-
-import net.minecraft.world.level.levelgen.SurfaceRules;
-
-
-@Mixin(SurfaceRules.Context.class)
+@Mixin(MaterialRuleContext.class)
 public abstract class MaterialRuleContextMixin implements MaterialRuleContextExtensions {
+    @Unique
+    private ChunkAccess larion$chunk;
 
-  public SurfaceRules.Condition somewhatSteepSlopePredicate;
+    @Override
+    public void larion$setChunk(ChunkAccess chunk) {
+        larion$chunk = chunk;
+    }
 
-  @Inject(
-    method = "<init>",
-    at = @At("TAIL")
-  )
-  public void constructorTail(CallbackInfo ci) {
-    somewhatSteepSlopePredicate = new SomewhatSteepSlopePredicate((SurfaceRules.Context)(Object)this);
-  }
-
-  @Override
-  public SurfaceRules.Condition getSomewhatSteepSlopePredicate() {
-  	return somewhatSteepSlopePredicate;
-  }
-    
+    @Override
+    public ChunkAccess larion$getChunk() {
+        return larion$chunk;
+    }
 }
