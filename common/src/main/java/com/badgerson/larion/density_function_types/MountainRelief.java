@@ -39,16 +39,23 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
                 double south = z - SPACING * (cellZ + 0.2 + 0.6 * fraction(shape, 10));
                 double radius = 410 + 115 * fraction(shape, 20);
                 double distance = Math.hypot(east, south);
-                if (distance >= radius) {
+                if (distance >= radius * 1.34) {
                     continue;
                 }
 
                 double angle = Math.atan2(south, east) - 2 * Math.PI * fraction(shape, 30);
-                double radial = distance / radius;
+                // A longer, gentler flank carries the main spur and a shorter
+                // flank exposes a steeper face on the opposite side.
+                double span = 1 + 0.19 * Math.cos(angle) + 0.15 * Math.cos(2 * angle - 0.6);
+                double radial = distance / (radius * span);
+                if (radial >= 1) {
+                    continue;
+                }
                 // Spurs stay attached to the summit. Valleys widen downstream and
                 // fade into the same foothill apron as the ridges beside them.
                 int valleys = 3 + (int) (3 * fraction(shape, 50));
-                double winding = valleys * angle + 2.2 * radial + 0.9 * Math.sin(angle);
+                double winding = valleys * angle + 2.2 * radial
+                        + 0.95 * Math.sin(angle) + 0.48 * Math.sin(2 * angle - 2.8 * radial);
                 double valley = 0.5 + 0.5 * Math.cos(winding);
                 double profile = smooth(1 - radial);
                 double shoulder = radial * smooth(Math.min(1, radial / 0.24));
@@ -56,7 +63,7 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ) imp
 
                 // Two ravines fork uphill from each main valley. Their separation
                 // shrinks downstream so the cuts converge into a single channel.
-                double branch = 1.15 * (1 - radial);
+                double branch = (1.15 + 0.24 * Math.sin(angle + 0.4)) * (1 - radial);
                 double channelDistance = 1 - Math.max(Math.cos(winding - branch), Math.cos(winding + branch));
                 double channelWidth = 0.055 + 0.18 * radial;
                 double channel = 1 - smooth(Math.min(1, channelDistance / channelWidth));
