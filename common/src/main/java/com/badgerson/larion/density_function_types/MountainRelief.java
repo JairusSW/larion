@@ -32,6 +32,7 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ, boo
         int gridX = (int) Math.floor(x / SPACING);
         int gridZ = (int) Math.floor(z / SPACING);
         double height = 0;
+        double adjacentFlank = 0;
         double glacier = 0;
         for (int dz = -1; dz <= 1; dz++) {
             for (int dx = -1; dx <= 1; dx++) {
@@ -61,7 +62,9 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ, boo
                         + 0.95 * Math.sin(angle) + 0.48 * Math.sin(2 * angle - 2.8 * radial);
                 double valley = 0.5 + 0.5 * Math.cos(winding);
                 double profile = smooth(1 - radial);
-                double shoulder = radial * smooth(Math.min(1, radial / 0.24));
+                // Keep the upper crest connected. Incision develops farther
+                // downhill where the branching valleys have room to separate.
+                double shoulder = radial * smooth(Math.min(1, radial / 0.49));
                 double valleyFloor = smooth(Math.clamp((valley - 0.36) / (0.61 - 0.25 * radial), 0, 1));
 
                 // Two ravines fork uphill from each main valley. Their separation
@@ -79,16 +82,26 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ, boo
                 double peak = 210 + 105 * fraction(shape, 40);
                 double flank = peak * profile * (1 - incision);
                 if (flank > height) {
+                    adjacentFlank = height;
                     height = flank;
                     if (glacierChannels) {
                         // Deliver ice down the ravines and taper it out at both ends.
                         glacier = channel * smooth(Math.clamp((radial - 0.12) / 0.22, 0, 1))
                                 * smooth(Math.clamp((0.82 - radial) / 0.28, 0, 1));
                     }
+                } else {
+                    adjacentFlank = Math.max(adjacentFlank, flank);
                 }
             }
         }
-        return glacierChannels ? glacier : height;
+        if (glacierChannels) {
+            return glacier;
+        }
+        // Join substantial, similarly high shoulders into a single massif.
+        // The blend narrows near an isolated summit or the edge of a foothill.
+        double blendWidth = 150 * smooth(Math.clamp(adjacentFlank / 95, 0, 1));
+        double overlap = blendWidth - (height - adjacentFlank);
+        return overlap > 0 ? height + overlap * overlap / (4 * blendWidth) : height;
     }
 
     private static double smooth(double t) {
@@ -112,7 +125,7 @@ public record MountainRelief(DensityFunction shiftX, DensityFunction shiftZ, boo
 
     @Override
     public Interval range() {
-        return Interval.ofSymmetric(glacierChannels ? 1 : 315);
+        return Interval.ofSymmetric(glacierChannels ? 1 : 352.5f);
     }
 
     @Override
